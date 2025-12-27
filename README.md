@@ -36,8 +36,68 @@ An intelligent AI-powered system built with n8n to reduce manual email handling 
 
 ---
 
-## 🧩 Workflows for Developers
-- `inbox-ai-agent-workflow.json`
+## ▶️ How to Execute the Workflow
+
+This repository contains an n8n workflow JSON file. Execution happens inside n8n, not on GitHub.
+
+---
+
+### Step 1: Import the Workflow into n8n
+1. Open your n8n instance (local, cloud, or self-hosted)
+2. Go to **Workflows**
+3. Click **Import from File**
+4. Select:
+5. Click **Import**
+
+---
+
+### Step 2: Configure Required Credentials
+For security reasons, credentials are not included in the JSON file.
+
+You need to configure:
+- Email credentials (IMAP / Gmail / Outlook)
+- AI provider credentials (OpenAI or equivalent)
+- Any third-party APIs used in the workflow
+
+Red-highlighted nodes indicate missing credentials.
+
+---
+
+### Step 3: Test the Workflow
+1. Use the **Manual Trigger** (if available)
+2. Click **Execute Workflow**
+3. Verify that:
+- Emails are processed correctly
+- AI classification works as expected
+- Actions (reply, notify, route) are triggered
+
+---
+
+### Step 4: Activate the Workflow
+Once testing is successful:
+- Toggle the **Active** switch (top-right)
+- The workflow will now run automatically whenever new emails arrive
+
+---
+
+## 🔄 What Happens During Execution
+1. Incoming emails are monitored automatically
+2. AI analyzes the email intent and context
+3. n8n workflows determine the correct action
+4. Emails are replied to, tagged, summarized, or routed accordingly
+
+---
+
+## 🔒 Security Notes
+- No API keys or credentials are stored in this repository
+- Always configure credentials directly inside n8n
+- Replace any sensitive values with placeholders before exporting workflows
+
+---
+
+## 📦 Files Included
+- `workflows/inbox-ai-agent-workflow.json` — main n8n workflow file
+
 
 ---
 
