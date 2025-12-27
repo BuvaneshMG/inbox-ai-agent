@@ -96,7 +96,7 @@ Once testing is successful:
 ---
 
 ## 📦 Files Included
-- `workflows/inbox-ai-agent-workflow.json` — main n8n workflow file
+- `Inbox AI Agent.json` — main n8n workflow file
 
 
 ---
