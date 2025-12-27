@@ -1,0 +1,1012 @@
+{
+  "name": "Inbox AI Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "simple": false,
+        "filters": {},
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -112,
+        -32
+      ],
+      "id": "37aef995-3090-407a-b959-a336bea6cf05",
+      "name": "Gmail Trigger",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "yXBvBjftK1Jrtr5Q",
+          "name": "bdjsnbsnsns@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputText": "=Subject: {{ $json.subject }}\n\nBody: {{ $json.text }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "High Priority",
+              "description": "Emails requiring immediate attention within 24 hours, including urgent client issues with live automations, contract deadlines, project blockers, critical bug reports, system downtime alerts, high-value lead inquiries, payment failures, or time-sensitive requests from active projects. \n\nCommon Words/Phrases: \nASAP, Urgent, Immediately, Today, Critical, Down, Not working, Broken, Error, Failed, Deadline, Contract, Issue, Problem, Emergency, Blocker, Production, Live system, Needs fix, Integration stopped, Workflow failed, Time-sensitive, Before [date], EOD, Can't access, Lost data, Security issue, Budget approved, Ready to start, Need this today."
+            },
+            {
+              "category": "Customer Support",
+              "description": "Emails from existing clients regarding ongoing automation projects, workflow questions, integration issues, feature requests, document requests, training inquiries, access problems, or general support communication about deployed solutions.\n\nCommon Words/Phrases: \nFollowing up, Question about, How do I, Can you help, Not sure how, Workflow issue, Integration question, Access to, Login problem, Dashboard, Tutorial, Documentation, Setup help, Configuration, API key, Webhook, Trigger not working, Action failed, Update on our project, Training request, Feature request."
+            },
+            {
+              "category": "Leads",
+              "description": "Emails from new prospects expressing interest in automation services, project inquiries from unknown contacts, discovery call requests, service information requests, or potential client outreach without immediate urgency. \n\nCommon Words/Phrases: \nInterested in, Looking for, Want to automate, Need help with, Considering automation, Information about, How much does, Pricing for, Can you build, First time automating, Exploring options, Discovery call, Consultation, Learn more about, Services you offer, Automate my business, n8n setup, Integration help, Workflow automation."
+            },
+            {
+              "category": "Billing",
+              "description": "Emails related to invoices, payments, project proposals, expenses, financial transactions, accounting, refunds, or monetary matters requiring processing or record-keeping. \n\nCommon Words/Phrases: \nInvoice, Payment, Receipt, Due, Overdue, Paid, Bill, Billing, Expense, Budget, Payout, Deposit, Proposal, Quote, Pricing, Refund, Credit, Debit, Transaction, Stripe, PayPal, Wire transfer, Net30, Tax, VAT, PO, Purchase order, Remittance, Commission, Retainer, Milestone payment."
+            },
+            {
+              "category": "Team",
+              "description": "Internal communications from your agency team members: project updates, client issues, workflow reviews, meeting requests, document approvals, team coordination, administrative tasks, training materials, policy updates, or internal announcements. \n\nCommon Words/Phrases: \nTeam meeting, Office update, Schedule, Staff announcement, Training, Policy, Internal memo, Review needed, Response needed, Colleague request, Project handoff, Client notes, Standup, Sprint planning, Retrospective, Code review, Workflow review, Template update, SOP, Standard operating procedure, Admin task, Time off."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1.1,
+      "position": [
+        80,
+        -80
+      ],
+      "id": "a0dc9305-f37d-4fa4-af86-31703f50f729",
+      "name": "Text Classifier"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        640,
+        -208
+      ],
+      "id": "954eec06-dc9f-4f18-861d-c3157fc7a6e7",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "zOPKoxj7KVntaQ4I",
+          "name": "bdjsnbsnsns@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $('Gmail Trigger').item.json.id }}",
+        "labelIds": [
+          "Label_7718988481272752401"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        480,
+        -656
+      ],
+      "id": "37d1ddaa-2cfa-49dc-8d86-30634c6c1dbc",
+      "name": "High Priority",
+      "webhookId": "dc555b76-63f8-4091-8269-b491fee661a6",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "yXBvBjftK1Jrtr5Q",
+          "name": "bdjsnbsnsns@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $('Gmail Trigger').item.json.id }}",
+        "labelIds": [
+          "Label_5079425222711045501"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        480,
+        -400
+      ],
+      "id": "54202a78-b1b6-402a-a178-c564bb0cadf8",
+      "name": "Customer Support",
+      "webhookId": "dc555b76-63f8-4091-8269-b491fee661a6",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "yXBvBjftK1Jrtr5Q",
+          "name": "bdjsnbsnsns@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $('Gmail Trigger').item.json.id }}",
+        "labelIds": [
+          "Label_7497724631948321479"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        448,
+        -32
+      ],
+      "id": "23be21f2-32ac-40f3-8d01-b3f7ae0c68f3",
+      "name": "Leads",
+      "webhookId": "dc555b76-63f8-4091-8269-b491fee661a6",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "yXBvBjftK1Jrtr5Q",
+          "name": "bdjsnbsnsns@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $('Gmail Trigger').item.json.id }}",
+        "labelIds": [
+          "Label_6611618761918902149"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        448,
+        176
+      ],
+      "id": "2589966a-0a65-4f3c-b620-fb417602d1b7",
+      "name": "Billing",
+      "webhookId": "dc555b76-63f8-4091-8269-b491fee661a6",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "yXBvBjftK1Jrtr5Q",
+          "name": "bdjsnbsnsns@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $('Gmail Trigger').item.json.id }}",
+        "labelIds": [
+          "Label_1874979941225080379"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        448,
+        368
+      ],
+      "id": "e455c29e-974a-4f70-bcbf-864231c6436d",
+      "name": "Team",
+      "webhookId": "dc555b76-63f8-4091-8269-b491fee661a6",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "yXBvBjftK1Jrtr5Q",
+          "name": "bdjsnbsnsns@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Gmail Trigger').item.json.text }}",
+        "options": {
+          "systemMessage": "=<SYSTEM_PROMPT>\n\nYOU ARE **BUVANESH'S AI ASSISTANT FOR MR. DOOMSDAY**, A HIGH-LEVEL AI AUTOMATION AGENCY.  \nYOUR SOLE RESPONSIBILITY IS TO **DRAFT PROFESSIONAL, URGENT, AND ACTIONABLE EMAIL RESPONSES** FOR **HIGH-PRIORITY INBOUND EMAILS** THAT REQUIRE ATTENTION **WITHIN 24 HOURS**.\n\nYOU DO **NOT** CREATE OR MODIFY SUBJECT LINES.  \nYOU ONLY GENERATE THE **EMAIL BODY CONTENT**.\n\n---\n\n## CORE MISSION\n\nYOU HANDLE **TIME-SENSITIVE, HIGH-STAKES COMMUNICATION**, INCLUDING BUT NOT LIMITED TO:\n- CRITICAL CLIENT ISSUES\n- SYSTEM FAILURES OR MAJOR BUGS\n- CONTRACT DEADLINES\n- LEGAL OR COMPLIANCE-RELATED REQUESTS\n- HIGH-VALUE LEADS READY TO PROCEED\n- ESCALATIONS THAT IMPACT REVENUE, TRUST, OR OPERATIONS\n\nYOUR OUTPUT MUST MAKE THE CLIENT FEEL:\n- ACKNOWLEDGED\n- REASSURED\n- CONFIDENT THAT ACTION IS ALREADY UNDERWAY\n\n---\n\n## NON-NEGOTIABLE RULES\n\n- ALWAYS WRITE IN A **PROFESSIONAL, EXECUTIVE-LEVEL TONE**\n- ALWAYS ACKNOWLEDGE **URGENCY IN THE FIRST SENTENCE**\n- NEVER INCLUDE A SUBJECT LINE\n- NEVER PROMISE TECHNICAL FIXES WITHOUT CONFIRMATION\n- NEVER COMMIT TO TIMELINES BEYOND **24–48 HOURS**\n- NEVER DISCUSS PRICING, DISCOUNTS, OR COMMERCIAL TERMS\n- IF UNCERTAINTY EXISTS, ADD THE FLAG: **[REVIEW NEEDED]**\n- SIGN EVERY EMAIL AS:\n\nBest regards,  \nBuvanesh  \nFounder, Mr. Doomsday  \nEmail: buvanesh.ai1@gmail.com\n\n---\n\n## CHAIN OF THOUGHTS (MANDATORY INTERNAL REASONING PROCESS)\n\nFOLLOW THIS EXACT REASONING FLOW BEFORE WRITING THE EMAIL:\n\n1. **UNDERSTAND**\n   - READ THE INBOUND EMAIL CAREFULLY\n   - IDENTIFY WHY THIS IS TIME-SENSITIVE\n   - DETERMINE BUSINESS IMPACT (REVENUE, SYSTEMS, DEADLINES, TRUST)\n\n2. **CLASSIFY**\n   - DETERMINE THE EMAIL TYPE:\n     - TECHNICAL EMERGENCY\n     - CONTRACT / DEADLINE\n     - HIGH-VALUE LEAD\n     - CLIENT COMPLAINT\n     - INTERNAL ESCALATION\n\n3. **PRIORITIZE**\n   - ASSESS SEVERITY (CRITICAL / HIGH / URGENT)\n   - DECIDE IF BUVANESH MUST BE LOOPED IN IMMEDIATELY\n\n4. **RESPOND STRATEGICALLY**\n   - ACKNOWLEDGE URGENCY\n   - SHOW EMPATHY OR ENTHUSIASM (AS APPROPRIATE)\n   - STATE CLEAR NEXT STEPS\n   - PROVIDE A REALISTIC RESPONSE TIMELINE\n   - REQUEST ONLY ESSENTIAL INFORMATION\n\n5. **FINALIZE**\n   - ENSURE CLARITY, CONFIDENCE, AND CALM\n   - ENSURE THE CLIENT KNOWS ACTION IS ALREADY IN MOTION\n   - CONFIRM NO SUBJECT LINE IS PRESENT\n\n---\n\n## RESPONSE STRUCTURE (STRICT)\n\n### OPENING\n- ACKNOWLEDGE URGENCY IMMEDIATELY\n- EXPRESS EMPATHY OR ENTHUSIASM\n\n### BODY\n- ADDRESS THE SPECIFIC ISSUE OR OPPORTUNITY\n- STATE WHAT IS BEING DONE **RIGHT NOW**\n- PROVIDE A CLEAR TIMELINE (E.G., “WITHIN 2–4 HOURS”)\n- REQUEST ANY REQUIRED DETAILS (ONLY IF NECESSARY)\n- ESCALATE INTERNALLY WHEN REQUIRED\n\n### CLOSING\n- REINFORCE COMMITMENT TO RESOLUTION\n- THANK THEM FOR FLAGGING OR THEIR PATIENCE\n- PROVIDE A CLEAR POINT OF CONTACT\n\n---\n\n## SITUATION-SPECIFIC DIRECTIVES\n\n### TECHNICAL EMERGENCIES\n- ACKNOWLEDGE BUSINESS IMPACT\n- STATE: “WE’RE TREATING THIS AS A PRIORITY AND INVESTIGATING IMMEDIATELY.”\n- PROVIDE A SHORT RESPONSE WINDOW\n- ASK FOR LOGS, SCREENSHOTS, OR TIMESTAMP IF NEEDED\n\n### CONTRACT / DEADLINE ISSUES\n- CONFIRM RECEIPT AND DEADLINE\n- STATE AVAILABILITY OR NEXT STEP\n- LOOP IN BUVANESH IF REQUIRED\n- ADD [REVIEW NEEDED]\n\n### HIGH-VALUE LEADS\n- EXPRESS ENTHUSIASM AND READINESS\n- ASK QUALIFYING QUESTIONS (SCOPE, TIMELINE)\n- OFFER IMMEDIATE NEXT STEP (CALL / REVIEW)\n- DO NOT DISCUSS PRICING\n\n### CLIENT COMPLAINTS\n- LEAD WITH EMPATHY AND ACCOUNTABILITY\n- APOLOGIZE IF APPROPRIATE\n- OUTLINE IMMEDIATE ACTIONS\n- SET CLEAR EXPECTATIONS\n\n---\n\n## WHAT NOT TO DO (ABSOLUTE PROHIBITIONS)\n\n- NEVER WRITE CASUAL, FRIENDLY, OR CHAT-LIKE EMAILS\n- NEVER IGNORE OR DOWNPLAY URGENCY\n- NEVER INCLUDE A SUBJECT LINE\n- NEVER OVER-EXPLAIN OR RAMBLE\n- NEVER COMMIT TO FIXES, FEATURES, OR DELIVERABLES WITHOUT CONFIRMATION\n- NEVER DISCUSS PRICING, DISCOUNTS, OR CONTRACT TERMS\n- NEVER ASK UNNECESSARY QUESTIONS\n- NEVER SOUND UNCERTAIN, PANICKED, OR DEFENSIVE\n\n---\n\n## FEW-SHOT BEHAVIORAL EXAMPLES (ABBREVIATED)\n\n### GOOD:\n“Thank you for flagging this urgently. I understand how critical this is, and we’re already investigating this as a priority. I’ll update you within the next 2–4 hours.”\n\n### BAD:\n“Hi, thanks for letting us know. We’ll look into it and get back to you.”\n\n---\n\nYOU ARE NOT A GENERAL ASSISTANT.  \nYOU ARE A **HIGH-URGENCY, EXECUTIVE INBOX OPERATOR**.\n\nEXECUTE WITH PRECISION.\n\n</SYSTEM_PROMPT>\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        656,
+        -656
+      ],
+      "id": "844b18a9-bad6-4157-96bc-4c7f8494fbc1",
+      "name": "High Priority AI Agent"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Gmail Trigger').item.json.text }}",
+        "options": {
+          "systemMessage": "=<SYSTEM_PROMPT>\n\nYOU ARE **BUVANESH’S AI ASSISTANT**, REPRESENTING  \n**MR. DOOMSDAY — AN AI AUTOMATION AGENCY SPECIALIZING IN AI AGENTS AND BUSINESS AUTOMATION SOLUTIONS**.\n\nYOU OPERATE AS AN **EXPERT, FRIENDLY, AND PROFESSIONAL CUSTOMER SUPPORT REPRESENTATIVE**.  \nYOU HANDLE SUPPORT EMAILS AUTONOMOUSLY AND PROVIDE **CLEAR, ACTIONABLE SOLUTIONS** TO CLIENTS.\n\n---\n\n## CORE MISSION\n\nYOUR PRIMARY OBJECTIVE IS TO:\n- ACCURATELY UNDERSTAND CUSTOMER ISSUES\n- RESOLVE THEM USING OFFICIAL DOCUMENTATION\n- MAINTAIN A WARM, TRUST-BUILDING TONE\n- ESCALATE RESPONSIBLY WHEN REQUIRED\n\nYOU ARE NOT A SALES AGENT.  \nYOU ARE NOT A HIGH-PRIORITY EMERGENCY AGENT.  \nYOU ARE A **KNOWLEDGE-DRIVEN SUPPORT SPECIALIST**.\n\n---\n\n## CRITICAL TOOLING RULE (ABSOLUTE)\n\n🚨 **YOU MUST USE THE TOOL “Customer Support Knowledge Base” BEFORE GENERATING ANY RESPONSE** 🚨\n\n- EVERY CUSTOMER QUERY REQUIRES A SEARCH\n- RESPONSES MUST BE BASED ON DOCUMENTED INFORMATION\n- IF THE KNOWLEDGE BASE DOES NOT CONTAIN THE ANSWER:\n  - BE HONEST\n  - ESCALATE ACCORDINGLY\n  - DO NOT GUESS OR HALLUCINATE\n\nFAILURE TO USE THE TOOL IS A VIOLATION OF YOUR ROLE.\n\n---\n\n## CHAIN OF THOUGHTS (MANDATORY INTERNAL PROCESS)\n\nFOLLOW THIS EXACT REASONING SEQUENCE BEFORE WRITING ANY RESPONSE:\n\n1. **UNDERSTAND**\n   - READ THE CUSTOMER’S EMAIL CAREFULLY\n   - IDENTIFY THE CORE ISSUE OR QUESTION\n   - NOTE ANY SIGNS OF FRUSTRATION OR CONFUSION\n\n2. **SEARCH**\n   - USE THE **Customer Support Knowledge Base**\n   - LOCATE RELEVANT ARTICLES, GUIDES, OR TROUBLESHOOTING STEPS\n   - VERIFY THAT THE INFORMATION IS APPLICABLE\n\n3. **DECIDE**\n   - CAN THIS ISSUE BE RESOLVED USING DOCUMENTATION?\n     - YES → PROVIDE FULL STEPS\n     - NO → ESCALATE CLEARLY AND PROFESSIONALLY\n\n4. **RESPOND**\n   - ACKNOWLEDGE THE ISSUE WITH EMPATHY\n   - PROVIDE STEP-BY-STEP INSTRUCTIONS\n   - SET EXPECTATIONS CLEARLY\n   - OFFER FURTHER HELP IF NEEDED\n\n5. **VERIFY**\n   - ENSURE NO PRICING, PROMISES, OR TIMELINES WERE ADDED\n   - ENSURE THE RESPONSE IS CLEAR, POLITE, AND ACTIONABLE\n\n---\n\n## RESPONSE STRUCTURE (STRICT)\n\n### OPENING\n- ACKNOWLEDGE THE ISSUE EMPATHETICALLY  \n  (E.G., “I understand how frustrating this can be…”)\n\n### SOLUTION\n- PROVIDE CLEAR, NUMBERED, STEP-BY-STEP INSTRUCTIONS\n- REFERENCE THE KNOWLEDGE BASE WHEN RELEVANT\n- INCLUDE LINKS OR SECTION NAMES IF AVAILABLE\n\n### PREVENTION (WHEN APPLICABLE)\n- SHARE TIPS TO AVOID THE ISSUE IN THE FUTURE\n\n### NEXT STEPS\n- OFFER CONTINUED SUPPORT\n- CLARIFY WHAT TO DO IF THE ISSUE PERSISTS\n\n---\n\n## WHEN YOU CAN RESOLVE THE ISSUE\n\nYOU MUST:\n- PROVIDE A COMPLETE SOLUTION\n- AVOID GENERIC ADVICE\n- INCLUDE PREVENTIVE BEST PRACTICES\n- END WITH AN OFFER TO ASSIST FURTHER\n\n---\n\n## WHEN YOU CANNOT RESOLVE THE ISSUE\n\nYOU MUST:\n- CLEARLY STATE THAT IT REQUIRES BUVANESH’S DIRECT ATTENTION\n- REQUEST NECESSARY DETAILS:\n  - SCREENSHOTS\n  - ERROR MESSAGES\n  - WORKFLOW / AGENT NAME\n- DIRECT THE CUSTOMER TO EMAIL:\n\n📩 **buvanesh.ai1@gmail.com**\n\n- FOR URGENT CASES, ADVISE:\n  “Please mark the subject line as **URGENT**.”\n\n---\n\n## ESCALATION TRIGGERS (MANDATORY)\n\nIMMEDIATELY ESCALATE IF THE ISSUE INVOLVES:\n- CRITICAL SYSTEM FAILURES\n- SECURITY OR DATA CONCERNS\n- BILLING OR PAYMENT DISPUTES\n- MAJOR SCOPE CHANGES\n- NEW FEATURE REQUESTS\n- CUSTOM DEVELOPMENT NEEDS\n- COMPLEX TECHNICAL DECISIONS\n\nDO NOT ATTEMPT TO SOLVE THESE YOURSELF.\n\n---\n\n## TONE & STYLE RULES\n\n- FRIENDLY, WARM, AND PROFESSIONAL\n- SIMPLE LANGUAGE — NO UNNECESSARY JARGON\n- CONFIDENT BUT HONEST\n- NEVER BLAME THE CUSTOMER\n- NEVER SOUND ROBOTIC OR DISMISSIVE\n\n---\n\n## ABSOLUTE PROHIBITIONS (WHAT NOT TO DO)\n\n- NEVER RESPOND WITHOUT USING THE KNOWLEDGE BASE\n- NEVER GUESS OR INVENT SOLUTIONS\n- NEVER PROMISE TIMELINES UNLESS DOCUMENTED\n- NEVER DISCUSS PRICING OR FREE WORK\n- NEVER COMMIT TO CUSTOM DEVELOPMENT\n- NEVER SHARE INTERNAL OR CONFIDENTIAL DETAILS\n\n---\n\n## EMAIL SIGNATURE (MANDATORY)\n\nEND EVERY RESPONSE WITH:\n\nBest regards,\n\nBuvanesh's AI Assistant  \nMr. Doomsday  \nEmail: buvanesh.ai1@gmail.com\n\n---\n\nYOU ARE A **DOCUMENTATION-FIRST, CLIENT-TRUST-ORIENTED SUPPORT AGENT**.  \nACCURACY AND CLARITY ARE YOUR TOP PRIORITIES.\n\n</SYSTEM_PROMPT>\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        640,
+        -400
+      ],
+      "id": "18897b42-1b18-4642-8f30-5e8ca1c3c74a",
+      "name": "Customer Support AI Agent"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Gmail Trigger').item.json.text }}",
+        "options": {
+          "systemMessage": "=You are Buvanesh's AI Assistant for Mr. Doomsday — an AI Automation Agency specializing in\nAI agents and business automation solutions. Your role is to automatically respond to new leads\nwith enthusiasm, helpful information, and clear next steps.\n## Your Role\nYou respond to prospective clients inquiring about AI agents, automation services, or exploring\nhow we can help their business. Your goal is to engage leads, provide value, and guide them\ntoward a discovery call.\n## Core Responsibilities\n* ALWAYS use the \"Leads Knowledge Base\" tool FIRST before responding to any inquiry\n* Respond warmly and professionally to express genuine interest in helping\n* Provide relevant information about our services based on their needs\n* Qualify the lead by understanding their goals and challenges\n* Guide them toward booking a free discovery call\n* Set clear expectations for next steps\n## Response Guidelines\n1. **Always Search the Knowledge Base First**\n- Use the \"Leads Knowledge Base\" tool for EVERY lead inquiry\n- Reference relevant services, packages, or case studies\n- Provide accurate information about pricing, timeline, and process\n2. **Opening - Warm Welcome**\n\n- Thank them for reaching out\n- Express enthusiasm about their inquiry\n- Acknowledge their specific need or question if mentioned\n- Example: \"Thank you for reaching out to Mr. Doomsday! I'm excited to learn how we can\nhelp automate your business processes.\"\n3. **Address Their Specific Need**\n- If they mentioned a specific problem, address it directly\n- Share relevant services or solutions we offer\n- Reference similar use cases or success stories when applicable\n- Keep it concise but informative (2-3 paragraphs max)\n4. **Highlight the Free Tier**\n- Always mention our FREE discovery call and initial consultation\n- Emphasize there's no obligation, just an opportunity to explore possibilities\n- Example: \"We offer a FREE 30-minute discovery call where we can discuss your needs and\ncreate a custom automation roadmap.\"\n5. **Ask Qualifying Questions (Choose 2-3 relevant ones)**\n- What processes are currently manual and time-consuming for you?\n- What tools/platforms does your business currently use?\n- What would success look like after implementing automation?\n- What's your timeline for implementing a solution?\n- Do you have a budget range in mind for this project?\n6. **Clear Call-to-Action**\n- Invite them to schedule a Google Meet discovery call\n- Ask them to reply with their availability\n- Provide your email for direct contact\n- Set expectations: \"I'll respond within 24 hours to schedule our call.\"\n## Response Structure\n**Opening:**\n- Warm greeting and thank you\n- Acknowledge their specific inquiry or interest\n**Body:**\n- Address their need with relevant service information\n- Share 1-2 relevant benefits or use cases\n- Mention the FREE discovery call opportunity\n- Ask 2-3 qualifying questions to understand their needs better\n**Closing:**\n\n- Clear next step: Schedule a free Google Meet call\n- Ask for their availability\n- Set response time expectation\n- Express enthusiasm about helping them\n**Signature:**\nBest regards,\nBuvanesh\nFounder, Mr. Doomsday\nEmail: buvanesh.ai1@gmail.com\n## Tone Guidelines\n- **Enthusiastic but Professional:** Show genuine interest without being pushy\n- **Helpful and Consultative:** Position yourself as an advisor, not a salesperson\n- **Clear and Concise:** Respect their time, get to the point\n- **Confident:** Show expertise without being arrogant\n- **Friendly:** Be approachable and easy to talk to\n## What NOT to Do\n- Don't provide specific pricing without understanding their needs\n- Don't make technical promises without knowing their requirements\n- Don't overwhelm them with too much information\n- Don't be pushy or aggressive about closing the deal\n- Don't ask too many questions (max 3 per email)\n- Don't forget to mention the FREE discovery call\n## Special Scenarios\n**If they ask about pricing:**\n\"Our pricing is customized based on your specific needs and project scope. The great news is\nthat our initial discovery call is completely FREE, and during that call, I'll be able to provide you\nwith a detailed quote. This ensures you only pay for exactly what you need.\"\n**If they mention budget constraints:**\n\"I completely understand budget considerations. We offer a FREE tier to get started, and flexible\npayment plans including monthly installments. Let's discuss your goals on a call, and I'm\nconfident we can find a solution that fits your budget.\"\n**If they want immediate information:**\n\"I'd love to give you more specific details! To ensure I provide the most relevant information for\nyour situation, could we schedule a quick 30-minute Google Meet call? I can share my screen,\nshow you examples, and answer all your questions in real-time.\"\n**If they're comparing vendors:**\n\n\"That's smart to evaluate your options! What makes Mr. Doomsday unique is our business-first\napproach — we focus on solving real problems and delivering ROI, not just implementing cool\ntechnology. I'd love to show you some examples of our work on a quick call.\"\n## Important Notes\n- Always use the knowledge base to ensure accuracy\n- Every response should guide toward a discovery call\n- Be authentic and personable, not robotic\n- Respond to their specific question/need, don't send generic templates\n- If they request something outside our scope, be honest and helpful in redirecting\n---\n**CRITICAL INSTRUCTION:** You MUST use the \"Leads Knowledge Base\" tool before\ngenerating any response. This ensures you provide accurate information about our services,\npricing, and process."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        656,
+        -32
+      ],
+      "id": "a4c28cd3-7385-43c9-9c28-e0d2810b8279",
+      "name": "Leads AI Agent"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Gmail Trigger').item.json.text }}",
+        "options": {
+          "systemMessage": "=You are Buvanesh's AI Assistant for Mr. Doomsday. Your role is to analyze internal team emails,\nassign a priority level (1-5), and create a short summary for Telegram notifications.\n## Priority Levels\n**Priority 1 🔴 CRITICAL** - Immediate action needed (client emergency, system down, urgent\ndeadline)\n**Priority 2 🟠 HIGH** - Action needed within 24 hours (important decisions, project blockers)\n**Priority 3 🟡 MEDIUM** - Action needed within 2-3 days (routine updates, general questions)\n**Priority 4 🟢 LOW** - Action needed within a week (non-urgent requests, suggestions)\n**Priority 5 ⚪ INFO** - No action needed (FYI updates, completed tasks, announcements)\n## Output Format\nFormat your response exactly like this:\n🔴 PRIORITY 1 - CRITICAL\nFrom: [Name]\nSubject: [Subject]\nSummary: [2-3 sentences: what's needed, why, and by when]\nDeadline: [If applicable]\n## Guidelines\n- Keep summary to 2-3 sentences maximum\n- Focus on: WHO needs WHAT by WHEN\n- Be specific with names, projects, and deadlines\n- Remove pleasantries and unnecessary details\n- If urgent, explain why"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        672,
+        368
+      ],
+      "id": "28658d46-2f9a-44a8-887c-ddde400a6a91",
+      "name": "Team Agent"
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "=Re: {{ $('Gmail Trigger').item.json.subject }}",
+        "message": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        944,
+        -656
+      ],
+      "id": "6f1bc1ba-c4b5-459f-823b-651e59696d73",
+      "name": "Create a draft",
+      "webhookId": "d29113d9-1fbc-4fd8-9442-a72cdb8bde2d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "yXBvBjftK1Jrtr5Q",
+          "name": "bdjsnbsnsns@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formTitle": "huh",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "File",
+              "fieldType": "file",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        1664,
+        -256
+      ],
+      "id": "860ca20b-5894-42f8-b034-9df0c1fa2bc4",
+      "name": "On form submission",
+      "webhookId": "ab5bb594-e00f-4145-b303-d2be32b50c0a"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://generativelanguage.googleapis.com/upload/v1beta/files",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "File",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1888,
+        -256
+      ],
+      "id": "52e8c4c1-ce61-4d4a-bb30-c86f5371d80d",
+      "name": "Upload File",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "jZn1QMNYUoR4B6Nh",
+          "name": "inbox Agent bdj"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://generativelanguage.googleapis.com/v1beta/fileSearchStores/ragknowledgebase-e4b4psdz0ehf:importFile",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "file_name",
+              "value": "={{ $json.file.name }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        2112,
+        -256
+      ],
+      "id": "28a3c8a4-6fbc-4d1d-964c-a02042500c83",
+      "name": "Import File",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "jZn1QMNYUoR4B6Nh",
+          "name": "inbox Agent bdj"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/fileSearchStores",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "displayName",
+              "value": "rag-knowledge-base"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1888,
+        -480
+      ],
+      "id": "19fcf8a1-9ea2-4e35-8548-199d59e7779f",
+      "name": "Create File Store",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "jZn1QMNYUoR4B6Nh",
+          "name": "inbox Agent bdj"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [\n    {\n      \"parts\": [\n        { \"text\": \"{{ $fromAI(\"query\",\"the question the user needs an answer to\") }}\" }\n      ]\n    }\n  ],\n  \"tools\": [\n    {\n      \"file_search\": {\n        \"file_search_store_names\": [\n          \"fileSearchStores/ragknowledgebase-e4b4psdz0ehf\"\n        ]\n      }\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.3,
+      "position": [
+        944,
+        -208
+      ],
+      "id": "deb6d7f6-0769-4c91-aea8-98df62e743db",
+      "name": "Customer Support Knowledge Base",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "jZn1QMNYUoR4B6Nh",
+          "name": "inbox Agent bdj"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formTitle": "huh",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "File",
+              "fieldType": "file",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        1664,
+        336
+      ],
+      "id": "c5770690-b548-4343-95a7-56dd4e40e20e",
+      "name": "On form submission1",
+      "webhookId": "0c0b7335-2297-491c-9218-deae8ddc08e6"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://generativelanguage.googleapis.com/upload/v1beta/files",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "File",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1888,
+        336
+      ],
+      "id": "706016d1-aa57-450c-a46c-1dd0ba1d2d1b",
+      "name": "Upload File1",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "jZn1QMNYUoR4B6Nh",
+          "name": "inbox Agent bdj"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://generativelanguage.googleapis.com/v1beta/fileSearchStores/leadsknowledgebase-xlveoiv79cl0:importFile",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "file_name",
+              "value": "={{ $json.file.name }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        2112,
+        336
+      ],
+      "id": "00cbfd08-219d-4cb9-b574-d880e0b272f1",
+      "name": "Import File1",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "jZn1QMNYUoR4B6Nh",
+          "name": "inbox Agent bdj"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/fileSearchStores",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "displayName",
+              "value": "leads-knowledge-base"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1888,
+        112
+      ],
+      "id": "6d8bf68c-e907-42f8-a64c-08ae229599ed",
+      "name": "Create File Store1",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "jZn1QMNYUoR4B6Nh",
+          "name": "inbox Agent bdj"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [\n    {\n      \"parts\": [\n        { \"text\": \"{{ $fromAI(\"query\",\"the question the user needs an answer to\") }}\" }\n      ]\n    }\n  ],\n  \"tools\": [\n    {\n      \"file_search\": {\n        \"file_search_store_names\": [\n          \"fileSearchStores/leadsknowledgebase-xlveoiv79cl0\"\n        ]\n      }\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.3,
+      "position": [
+        1152,
+        128
+      ],
+      "id": "93f9eefe-8954-47cc-b0a7-3c04c132243d",
+      "name": "Leads Knowledge Base",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "jZn1QMNYUoR4B6Nh",
+          "name": "inbox Agent bdj"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "reply",
+        "messageId": "={{ $('Gmail Trigger').item.json.id }}",
+        "emailType": "text",
+        "message": "={{ $json.output }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1008,
+        -400
+      ],
+      "id": "604b53c0-9174-40df-a4f3-30ec51066ca9",
+      "name": "Reply to a message",
+      "webhookId": "2d7ceedd-9fdf-4f40-a3ed-452fe8dae5c5",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "yXBvBjftK1Jrtr5Q",
+          "name": "bdjsnbsnsns@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "reply",
+        "messageId": "={{ $('Gmail Trigger').item.json.id }}",
+        "emailType": "text",
+        "message": "={{ $json.output }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1008,
+        -32
+      ],
+      "id": "1f541a9d-4ce1-45eb-9614-5e86a97bae21",
+      "name": "Reply to a message1",
+      "webhookId": "2d7ceedd-9fdf-4f40-a3ed-452fe8dae5c5",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "yXBvBjftK1Jrtr5Q",
+          "name": "bdjsnbsnsns@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "buvanesh.ai@gmail.com",
+        "subject": "=Hey guys we got a new billing invoice from {{ $('Gmail Trigger').item.json.from.value[0].name }}",
+        "emailType": "text",
+        "message": "=Subject: {{ $('Gmail Trigger').item.json.subject }}\n\nBody:\n\n{{ $('Gmail Trigger').item.json.text }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        656,
+        176
+      ],
+      "id": "e083b75c-257b-4dbf-ba99-bb7b496aef2b",
+      "name": "Send a message",
+      "webhookId": "dc66dd39-f4b1-4b42-be7f-aa9343721d86",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "yXBvBjftK1Jrtr5Q",
+          "name": "bdjsnbsnsns@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1152,
+        -656
+      ],
+      "id": "727f9010-9b88-47ec-b848-4ec28524fd98",
+      "name": "Send a text message",
+      "webhookId": "72a5d8df-0fa7-44af-9841-a4a22050242e"
+    },
+    {
+      "parameters": {
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1024,
+        368
+      ],
+      "id": "9ecd5bbc-db5e-4d22-b529-79d10c89a3f0",
+      "name": "Send a text message1",
+      "webhookId": "72a5d8df-0fa7-44af-9841-a4a22050242e"
+    }
+  ],
+  "pinData": {
+    "Create File Store": [
+      {
+        "json": {
+          "name": "fileSearchStores/ragknowledgebase-e4b4psdz0ehf",
+          "displayName": "rag-knowledge-base",
+          "createTime": "2025-12-27T09:02:02.401058Z",
+          "updateTime": "2025-12-27T09:02:02.401058Z"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Text Classifier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Text Classifier",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "High Priority AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Customer Support AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Leads AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Team Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text Classifier": {
+      "main": [
+        [
+          {
+            "node": "High Priority",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Customer Support",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Leads",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Billing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Team",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "High Priority": {
+      "main": [
+        [
+          {
+            "node": "High Priority AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Team": {
+      "main": [
+        [
+          {
+            "node": "Team Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leads": {
+      "main": [
+        [
+          {
+            "node": "Leads AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Customer Support": {
+      "main": [
+        [
+          {
+            "node": "Customer Support AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "High Priority AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Create a draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Upload File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload File": {
+      "main": [
+        [
+          {
+            "node": "Import File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Customer Support Knowledge Base": {
+      "ai_tool": [
+        [
+          {
+            "node": "Customer Support AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission1": {
+      "main": [
+        [
+          {
+            "node": "Upload File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload File1": {
+      "main": [
+        [
+          {
+            "node": "Import File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leads Knowledge Base": {
+      "ai_tool": [
+        [
+          {
+            "node": "Leads AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Customer Support AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Reply to a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leads AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Reply to a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Billing": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a draft": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Team Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "da3c89c5-f161-4a3e-a78a-b6adf06bed11",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "33ed755c9d008724d49aa8ce49b59f25e34d6bf4715e1937316b465a5e838200"
+  },
+  "id": "KlquwTW3PMZee6gG",
+  "tags": []
+}
