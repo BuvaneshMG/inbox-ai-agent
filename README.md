@@ -44,5 +44,5 @@ An intelligent AI-powered system built with n8n to reduce manual email handling 
 ## 👨‍💻 Author
 **Buvanesh**  
 Automation Specialist  
-📫 Email: your@email.com  
-🔗 LinkedIn: https://linkedin.com/in/yourprofile
+📫 Email: buvaneshmg.io@gmail.com  
+🔗 LinkedIn: www.linkedin.com/in/buvaneshselvaraj
